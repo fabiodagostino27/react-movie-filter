@@ -7,13 +7,19 @@ export const Main = (props) => {
     const [moviesList, setMoviesList] = useState(movies);
 
     const [search, setSearch] = useState("");
+    const [filteredMovies, setFilteredMovies] = useState(movies);
+
+    useEffect(() => {
+        (search) ? setFilteredMovies(movies.filter(element => element.genre === search)) : setFilteredMovies(movies)
+    }, [search])
 
     return (
         <main className="container">
             <h2>Lista Film:</h2>
 
-            <label htmlFor="genre">Genere: </label>
+            <label htmlFor="genre">Filtra per genere: </label>
             <select name="genre" id="genre" onChange={(e) => setSearch(e.target.value)}>
+                <option value="">Tutti</option>
                 <option value="Fantascienza">Fantascienza</option>
                 <option value="Thriller">Thriller</option>
                 <option value="Romantico">Romantico</option>
@@ -21,7 +27,7 @@ export const Main = (props) => {
             </select>
             <ul>
                 {
-                    moviesList.map((element, index) => <Movie key={index} movie={element} />)
+                    filteredMovies.map((element, index) => <Movie key={index} movie={element} />)
                 }
             </ul>
         </main>
